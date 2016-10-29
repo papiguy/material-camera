@@ -1,5 +1,15 @@
-<manifest package="com.afollestad.materialcamera">
+<manifest package="com.afollestad.materialcamera"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <application>
+        <activity
+            android:name=".CaptureActivity"
+            android:theme="@style/MaterialCamera.CaptureActivity"/>
+        <activity
+            android:name=".CaptureActivity2"
+            android:theme="@style/MaterialCamera.CaptureActivity"/>
+    </application>
 
 </manifest>
