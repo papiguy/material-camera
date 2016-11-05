@@ -45,4 +45,7 @@ public class CameraIntentKey {
     public static final String STILL_SHOT = "still_shot";
 
     public static final String AUTO_RECORD = "auto_record";
+
+    public static final String SHOW_ACTION_BAR = "show_action_bar";
+    public static final String ACTIVITY_TITLE = "activity_title";
 }

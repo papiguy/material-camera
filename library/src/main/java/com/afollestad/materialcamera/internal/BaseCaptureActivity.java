@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,6 +35,8 @@ import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
+
+import static com.afollestad.materialcamera.internal.CameraIntentKey.PRIMARY_COLOR;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -112,7 +115,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         setContentView(R.layout.mcam_activity_videocapture);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final int primaryColor = getIntent().getIntExtra(CameraIntentKey.PRIMARY_COLOR, 0);
+            final int primaryColor = getIntent().getIntExtra(PRIMARY_COLOR, 0);
             final boolean isPrimaryDark = CameraUtil.isColorDark(primaryColor);
             final Window window = getWindow();
             window.setStatusBarColor(CameraUtil.darkenColor(primaryColor));
@@ -142,6 +145,22 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
                 mBackCameraId = savedInstanceState.getInt("back_camera_id_int");
             }
             mFlashMode = savedInstanceState.getInt("flash_mode");
+        }
+
+        if (getIntent().hasExtra(CameraIntentKey.SHOW_ACTION_BAR)){
+            boolean show = getIntent().getBooleanExtra(CameraIntentKey.SHOW_ACTION_BAR, false);
+            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+            toolbar.setBackgroundColor(getIntent().getIntExtra(PRIMARY_COLOR, 0));
+
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setVisibility(show?View.VISIBLE:View.INVISIBLE);
+
+            if (getIntent().hasExtra(CameraIntentKey.ACTIVITY_TITLE)){
+                setTitle(getIntent().getStringExtra(CameraIntentKey.ACTIVITY_TITLE));
+            }
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
@@ -338,7 +357,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
                 setRecordingStart(-1);
             }
             Fragment frag = PlaybackVideoFragment.newInstance(outputUri, allowRetry(),
-                    getIntent().getIntExtra(CameraIntentKey.PRIMARY_COLOR, 0));
+                    getIntent().getIntExtra(PRIMARY_COLOR, 0));
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, frag)
                     .commit();
@@ -351,7 +370,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
             useMedia(outputUri);
         } else {
             Fragment frag = StillshotPreviewFragment.newInstance(outputUri, allowRetry(),
-                    getIntent().getIntExtra(CameraIntentKey.PRIMARY_COLOR, 0));
+                    getIntent().getIntExtra(PRIMARY_COLOR, 0));
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, frag)
                     .commit();

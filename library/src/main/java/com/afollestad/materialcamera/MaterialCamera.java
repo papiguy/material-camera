@@ -87,6 +87,10 @@ public class MaterialCamera {
     private int mLabelRetry;
     private int mLabelConfirm;
 
+    private boolean mShowActionBar;
+    private String mActivityTitle;
+
+
     public MaterialCamera(@NonNull Activity context) {
         mContext = context;
         mActivityContext = context;
@@ -310,6 +314,12 @@ public class MaterialCamera {
         return this;
     }
 
+    public MaterialCamera showActionBar(String title){
+        mShowActionBar = true;
+        mActivityTitle = title;
+        return this;
+    }
+
     public Intent getIntent() {
         final Class<?> cls = !mForceCamera1 && CameraUtil.hasCamera2(mContext, mStillShot) ?
                 CaptureActivity2.class : CaptureActivity.class;
@@ -362,6 +372,13 @@ public class MaterialCamera {
             intent.putExtra(CameraIntentKey.LABEL_RETRY, mLabelRetry);
         if (mLabelConfirm != 0)
             intent.putExtra(CameraIntentKey.LABEL_CONFIRM, mLabelConfirm);
+
+        if (mShowActionBar){
+            intent.putExtra(CameraIntentKey.SHOW_ACTION_BAR, true);
+            if (mActivityTitle  != null){
+                intent.putExtra(CameraIntentKey.ACTIVITY_TITLE, mActivityTitle);
+            }
+        }
 
         return intent;
     }

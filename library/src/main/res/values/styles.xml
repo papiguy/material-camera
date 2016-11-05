@@ -5,6 +5,9 @@
         <item name="colorAccent">@android:color/white</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:textColorPrimary">@android:color/white</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>
