@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.afollestad.materialcamera.MaterialCamera;
 import com.afollestad.materialcamera.R;
@@ -161,6 +162,23 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
             if (getIntent().hasExtra(CameraIntentKey.ACTIVITY_TITLE)){
                 setTitle(getIntent().getStringExtra(CameraIntentKey.ACTIVITY_TITLE));
             }
+        }
+        TextView mMessage = (TextView) findViewById(R.id.message);
+        if (getIntent().hasExtra(CameraIntentKey.MESSAGE)){
+            mMessage.setText(getIntent().getStringExtra(CameraIntentKey.MESSAGE));
+            if (getIntent().hasExtra(CameraIntentKey.MESSAGE_STYLE)){
+                int messageStyle = getIntent().getIntExtra(CameraIntentKey.MESSAGE_STYLE, -1);
+                if (messageStyle > 0){
+                    if (Build.VERSION.SDK_INT < 23) {
+                        mMessage.setTextAppearance(getApplicationContext(), messageStyle);
+                    } else {
+                        mMessage.setTextAppearance(messageStyle);
+                    }
+                }
+            }
+
+        } else {
+            mMessage.setVisibility(View.GONE);
         }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |

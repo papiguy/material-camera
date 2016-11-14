@@ -11,9 +11,11 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 
 import com.afollestad.materialcamera.internal.CameraIntentKey;
@@ -86,6 +88,11 @@ public class MaterialCamera {
 
     private int mLabelRetry;
     private int mLabelConfirm;
+
+    private String mMessage;
+
+    @StyleRes
+    private int mMessageStyle = -1;
 
     private boolean mShowActionBar;
     private String mActivityTitle;
@@ -320,6 +327,17 @@ public class MaterialCamera {
         return this;
     }
 
+
+    public MaterialCamera showMessage(String message){
+        return showMessage(message, -1);
+    }
+
+    public MaterialCamera showMessage(String message, @StyleRes int styleRes){
+        mMessage = message;
+        mMessageStyle = styleRes;
+        return this;
+    }
+
     public Intent getIntent() {
         final Class<?> cls = !mForceCamera1 && CameraUtil.hasCamera2(mContext, mStillShot) ?
                 CaptureActivity2.class : CaptureActivity.class;
@@ -377,6 +395,13 @@ public class MaterialCamera {
             intent.putExtra(CameraIntentKey.SHOW_ACTION_BAR, true);
             if (mActivityTitle  != null){
                 intent.putExtra(CameraIntentKey.ACTIVITY_TITLE, mActivityTitle);
+            }
+        }
+
+        if (mMessage != null && !mMessage.isEmpty()) {
+            intent.putExtra(CameraIntentKey.MESSAGE, mMessage);
+            if (mMessageStyle != -1) {
+                intent.putExtra(CameraIntentKey.MESSAGE_STYLE, mMessageStyle);
             }
         }
 

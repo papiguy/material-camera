@@ -48,4 +48,7 @@ public class CameraIntentKey {
 
     public static final String SHOW_ACTION_BAR = "show_action_bar";
     public static final String ACTIVITY_TITLE = "activity_title";
+
+    public static final String MESSAGE = "message";
+    public static final String MESSAGE_STYLE = "message_style";
 }
